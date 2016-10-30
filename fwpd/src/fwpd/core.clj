@@ -1,4 +1,4 @@
- (ns fwpd.core)
+(ns fwpd.core)
 
 (def filename "suspects.csv")
 
@@ -27,12 +27,16 @@
   (map (fn [unmapped-row]
         (reduce (fn [row-map [vamp-key value]]
                   (assoc row-map vamp-key (convert vamp-key value)))
-                  {}
-                  (map vector vamp-keys unmapped-row)))
+                {}
+                (map vector vamp-keys unmapped-row)))
       rows))
 
 (defn glitter-filter
   [minimum-glitter records]
   (filter #(>= (:glitter-index %) minimum-glitter) records))
 
-(glitter-filter 3 (mapify (parse (slurp filename))))
+(defn -main
+  []
+  (println
+    (glitter-filter 3 (mapify (parse (slurp filename))))))
+
